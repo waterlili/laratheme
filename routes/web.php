@@ -24,5 +24,6 @@ Route::patch('notes/{note}','NotesController@update');
 Auth::routes();
 
 Route::get('/','RootController@index');
+Route::post('contactus','RootController@store');
 
 // Route::get('/','RootController@services');

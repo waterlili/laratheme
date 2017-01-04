@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use DB;
+use App\Contactus;
 use App\service;
 use App\Portfolio;
 use App\Team;
@@ -37,6 +38,21 @@ class RootController extends Controller
         $Items = DB::table('main_menu')->get();
         $abs = DB::table('about')->get();
         return view('home',compact('Items','servs','prts','abs','tms','lgs','prjs'));
+    }
+    public function store(Request $request,Contactus $contact)
+    {
+        # code...
+        // protected $fillable = ['username'];
+        $contact = new Contactus;
+        if ( $request->ajax() ) {
+        $contact->name = $request->username;
+        $contact->email = $request->email;
+        $contact->phone = $request->phone;
+        $contact->message = $request->message;
+        $contact->save();
+        return response(['msg' => 'Sent a new message', 'status' => 'success']);
+       }
+       return response(['msg' => 'Failed to send a new message', 'status' => 'failed']);
     }
 
 }

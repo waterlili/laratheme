@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLogosTable extends Migration
+class CreateContactusesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class CreateLogosTable extends Migration
      */
     public function up()
     {
-        Schema::create('logos', function (Blueprint $table) {
+        Schema::create('contactuses', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('img_path');
+            $table->string('name',100);
+            $table->string('email');
+            $table->string('phone',15);
+            $table->text('message');
             $table->timestamps();
         });
     }
@@ -27,6 +30,6 @@ class CreateLogosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('logos');
+        Schema::dropIfExists('contactuses');
     }
 }
