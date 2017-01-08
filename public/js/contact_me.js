@@ -14,31 +14,72 @@ $(function() {
         submitSuccess: function($form, event) {
             event.preventDefault(); // prevent default submit behaviour
             // get values from FORM
-            var username = $("input#username").val();
+            var name = $("input#name").val();
             var email = $("input#email").val();
             var phone = $("input#phone").val();
             var message = $("textarea#message").val();
-            var firstName = username; // For Success/Failure Message
+            var firstName = name; // For Success/Failure Message
             // Check for white space in name for Success/Fail message
             if (firstName.indexOf(' ') >= 0) {
-                firstName = username.split(' ').slice(0, -1).join(' ');
+                firstName = name.split(' ').slice(0, -1).join(' ');
             }
+            // $.ajax({
+            //     // url: "././mail/contact_me.php",
+            //     url: "/contactus",
+            //     type: "POST",
+            //     data: {
+            //         name: name,
+            //         phone: phone,
+            //         email: email,
+            //         message: message,
+            //     },
+            //     // data: {_token: CSRF_TOKEN},
+            //     dataType: 'json',
+            //     cache: false,
+            //     success: function(msg) {
+
+            //          alert(msg.arr);
+            //         // Success message
+            //         if ( msg.status === 'success' ) {
+
+            //         $('#success').html("<div class='alert alert-success'>");
+            //         $('#success > .alert-success').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
+            //             .append("</button>");
+            //         $('#success > .alert-success')
+            //             .append("<strong>Your message has been sent. </strong>");
+            //         $('#success > .alert-success')
+            //             .append('</div>').delay(3000).fadeOut("slow");
+
+            //         //clear all fields
+            //         $('#contactForm').trigger("reset");
+
+            //       }
+            //     },
+            //     error: function(msg) {
+            //         // Fail message
+            //         if ( msg.status === 'failed' ) {
+            //         $('#success').html("<div class='alert alert-danger'>");
+            //         $('#success > .alert-danger').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
+            //             .append("</button>");
+            //         $('#success > .alert-danger').append("<strong>Sorry " + firstName + ", it seems that my mail server is not responding. Please try again later!");
+            //         $('#success > .alert-danger').append('</div>').delay(3000).fadeOut("slow");
+            //         //clear all fields
+            //         $('#contactForm').trigger("reset");
+            //        }
+
+            //     },
+            // });
+            var form = $("#contactForm");
+
             $.ajax({
-                // url: "././mail/contact_me.php",
-                url: "/contactus",
-                type: "POST",
-                data: {
-                    username: username,
-                    phone: phone,
-                    email: email,
-                    message: message,
-                },
-                // data: {_token: CSRF_TOKEN},
-                dataType: 'json',
-                cache: false,
-                success: function(msg) {
-                    // Success message
-                    if ( msg.status === 'success' ) {
+                url     : form.attr("action"),
+                type    : form.attr("method"),
+                data    : form.serialize(),
+                dataType: "json",
+                success : function ( json ) 
+                {
+                    // alert("sdkjsl");
+                    // toastr.success( json.message , "Notifications" );
                     $('#success').html("<div class='alert alert-success'>");
                     $('#success > .alert-success').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
                         .append("</button>");
@@ -49,22 +90,50 @@ $(function() {
 
                     //clear all fields
                     $('#contactForm').trigger("reset");
-                  }
                 },
-                error: function(msg) {
-                    // Fail message
-                    if ( msg.status === 'failed' ) {
+                error   : function ( jqXhr, json, errorThrown ) 
+                {
+                    var errors = jqXhr.responseJSON;
+
+                    var errorsHtml= '';
+                    $.each( errors, function( key, value ) {
+                        errorsHtml += '<li>' + value[0] + '</li>'; 
+                        // alert(errorsHtml);
+                    });
+                    if (errorsHtml.indexOf("name") >= 0){
+                       $('.name').append(errorsHtml);
+                    }else if(errorsHtml.indexOf("email") >= 0){
+                       $('.email').append(errorsHtml);
+
+                    }else if(errorsHtml.indexOf("phone") >= 0){
+                       $('.phone').append(errorsHtml);
+
+                    }
+                    else if(errorsHtml.indexOf("message") >= 0){
+                       $('.message').append(errorsHtml);
+
+                    }else{
+                    // toastr.error( errorsHtml , "Error " + jqXhr.status +': '+ errorThrown);
                     $('#success').html("<div class='alert alert-danger'>");
                     $('#success > .alert-danger').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
                         .append("</button>");
-                    $('#success > .alert-danger').append("<strong>Sorry " + firstName + ", it seems that my mail server is not responding. Please try again later!");
-                    $('#success > .alert-danger').append('</div>').delay(3000).fadeOut("slow");
-                    //clear all fields
+                    $('#success > .alert-danger').append("There is some error.Please try again!");
+                    $('#success > .alert-danger').append('</div>').delay(5000).fadeOut("slow");
+                    clear all fields
                     $('#contactForm').trigger("reset");
-                   }
-                },
+                  }
+                }
+            })
+            .done(function(response)
+            {
+                //
+            })
+            .fail(function( jqXHR, json ) 
+            {
+                //
             });
-        },
+            return false;
+                },
         filter: function() {
             return $(this).is(":visible");
         },

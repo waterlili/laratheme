@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 class NotesController extends Controller
 {
+
     public function store(Request $request, Card $card)
     {
     	# code...
@@ -14,10 +15,10 @@ class NotesController extends Controller
     	// $note->body = $request->body;
     	// $card->notes()->save($note);
     	// $card->addNote($note)
-    	$card->addNote(
-
-               new Note($request->all())
-    		);
+        $this->validate($request,['body'=>'required|min:10']);
+        $note = new Note($request->all());
+        // $note->by(Auth::user());
+    	$card->addNote($note,1);
     	return back();
     	
     }

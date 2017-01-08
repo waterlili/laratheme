@@ -229,22 +229,22 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Your Name *" id="username" name="username" required data-validation-required-message="Please enter your name.">
-                                    <p class="help-block text-danger"></p>
+                                    <input type="text" class="form-control" placeholder="Your Name *" id="name" name="name" required data-validation-required-message="Please enter your name.">
+                                    <p class="help-block text-danger name"></p>
                                 </div>
                                 <div class="form-group">
                                     <input type="email" class="form-control" placeholder="Your Email *" id="email" name="email" required data-validation-required-message="Please enter your email address.">
-                                    <p class="help-block text-danger"></p>
+                                    <p class="help-block text-danger email"></p>
                                 </div>
                                 <div class="form-group">
                                     <input type="tel" class="form-control" placeholder="Your Phone *" id="phone" name="phone" required data-validation-required-message="Please enter your phone number.">
-                                    <p class="help-block text-danger"></p>
+                                    <p class="help-block text-danger phone"></p>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <textarea class="form-control" placeholder="Your Message *" id="message" name="message" required data-validation-required-message="Please enter a message."></textarea>
-                                    <p class="help-block text-danger"></p>
+                                    <p class="help-block text-danger message"></p>
                                 </div>
                             </div>
                             <div class="clearfix"></div>
@@ -255,6 +255,14 @@
                         </div>
 
                     </form>
+
+                    @if(count($errors))
+                        <ul>
+                            @foreach($errors->all() as $error)
+                             <li><{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                     @endif
                 </div>
             </div>
         </div>

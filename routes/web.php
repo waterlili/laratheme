@@ -1,6 +1,6 @@
 <?php
 
-/*
+/*	
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
@@ -14,6 +14,7 @@
 // Route::get('/',function () {
 //     return view('home');
 // });
+
 Route::get('cards','CardsController@index');
 Route::get('cards/{card}','CardsController@show');
 
@@ -25,5 +26,11 @@ Auth::routes();
 
 Route::get('/','RootController@index');
 Route::post('contactus','RootController@store');
+
+
+Route::get('admin', function () {
+    return view('admin_template');
+});
+Route::get('test', 'TestController@index');
 
 // Route::get('/','RootController@services');
