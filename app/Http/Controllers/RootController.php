@@ -41,25 +41,15 @@ class RootController extends Controller
     }
     public function store(Request $request,Contactus $contact)
     {
-        # code...
-        // protected $fillable = ['username'];
-        // $contact = new Contactus;
+        #validate form 
         $this->validate($request,['name'=>'min:3']);
         $this->validate($request,['email'=>'email']);
         $this->validate($request,['phone'=>'numeric']);
         $this->validate($request,['message'=>'string']);
-        // if(count($errors))
-     
-        //     $arr=$errors->all();
-           
+        
           
 
         if ( $request->ajax() ) {
-        // $contact->name = $request->name;
-        // $contact->email = $request->email;
-        // $contact->phone = $request->phone;
-        // $contact->message = $request->message;
-        // $result=$contact->save();
 
             $result=$contact->addContact(
 
@@ -68,14 +58,13 @@ class RootController extends Controller
             
        }
        if ($result) {
-           # code...
+        
           return response(['msg' => 'Sent a new message', 'status' => 'success']);
 
 
 
        }else{
           return response(['msg' => 'Failed to send a new message', 'status' => 'failed']);
-           // return Response::json(array('msg' => 'Failed to send a new message', 'status' => 'failed','arr'=>$arr));
 
         }
     }
